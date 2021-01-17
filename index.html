@@ -30,7 +30,7 @@
     game.prepare();
     game.renderGame();
     setInterval(function (){game.renderGame();},10);
-    setInterval(function (){game.doShit();},400);
+    setInterval(function (){game.gameEngine.checkForBlobs();},1000);
 </script>
 
 

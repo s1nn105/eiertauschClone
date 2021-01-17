@@ -17,17 +17,17 @@ class EierTausch{
      * Method that draws the eggs in their cells
      */
    renderGame(){
-        console.log("Runs renderGame");
         for( let x=0; x<this.columns;x++){
             for(let y=0; y<this.rows;y++){
                 let tile = this.gameEngine.getGrid(x,y);
-                this.renderer.drawEggInCell(x,y,tile.color);
+                //@see GameEngine.js remove method some questionable life choices were made  
+                this.renderer.drawEggInCell(x,y,tile.color==null ? "#FFFFFF":tile.color);
             }
         }
     }
 
     /**
-     * Method to verify that the renderGame is called in a interval by swaping pieces 
+     * Method to verify that the renderGame is called in a interval by swaping pieces
      */
    doShit(){
         let fromY =Math.floor(Math.random() * this.rows);

@@ -60,7 +60,6 @@ class Renderer {
      * (0,2)  (1,2) (2,2)
      */
     drawEggInCell(x,y,color){
-        console.log("Runs drawEgg in Cell");
         let topLeftx = x*this.columnStep;
         let topLefty  = y * this.rowStep;
         let centerX = topLeftx +(1/2)*Number(  this.columnStep);
