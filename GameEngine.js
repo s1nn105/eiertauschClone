@@ -28,4 +28,12 @@ class GameEngine{
     getGrid(x,y){
         return this.tileMap[x][y];
     }
+    setGrid(x,y,piece){
+        this.tileMap[x][y] = piece;
+    }
+    swapPieces(fromX,fromY,toX,toY){
+        let p1 = this.getGrid(fromX,fromY);
+        this.setGrid(fromX,fromY,this.getGrid(toX,toY));
+        this.setGrid(toX,toY,p1);
+    }
 }

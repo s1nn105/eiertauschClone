@@ -29,7 +29,8 @@
     var game= new EierTausch(render,gameEngine,rows,cols);
     game.prepare();
     game.renderGame();
-  //  setInterval(game.renderGame,100);
+    setInterval(function (){game.renderGame();},10);
+    setInterval(function (){game.doShit();},400);
 </script>
 
 

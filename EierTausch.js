@@ -16,7 +16,7 @@ class EierTausch{
     /**
      * Method that draws the eggs in their cells
      */
-    renderGame(){
+   renderGame(){
         console.log("Runs renderGame");
         for( let x=0; x<this.columns;x++){
             for(let y=0; y<this.rows;y++){
@@ -24,5 +24,16 @@ class EierTausch{
                 this.renderer.drawEggInCell(x,y,tile.color);
             }
         }
+    }
+
+    /**
+     * Method to verify that the renderGame is called in a interval by swaping pieces 
+     */
+   doShit(){
+        let fromY =Math.floor(Math.random() * this.rows);
+        let fromX = Math.floor(Math.random() * this.columns);
+        let toY =Math.floor(Math.random() * this.rows);
+        let toX = Math.floor(Math.random() * this.columns);
+        this.gameEngine.swapPieces(fromX,fromY,toX,toY);
     }
 }
