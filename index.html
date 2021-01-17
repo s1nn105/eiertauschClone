@@ -11,18 +11,25 @@
 <body>
 
 <canvas id="myCanvas" width="900" height="900"></canvas>
-
+<script src="pieces.js"></script>
 <script src="Renderer.js"></script>
-<script src="EierTausch.js"></script>
+<script  src="GameEngine.js"></script>
+<script  src="EierTausch.js"></script>
 
 <script>
+
+    let cols = 9;
+    let rows = 9;
+    //todo clean that up and move the cols and rows def in the  EierTausch class
+    let gameEngine = new GameEngine(rows,cols);
+
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
-    var cContext = ctx;
-
-    var render = new Renderer(ctx,canvas.height,canvas.width);
-    var game= new EierTausch(render);
+    var render = new Renderer(ctx,canvas.height,canvas.width,rows,cols);
+    var game= new EierTausch(render,gameEngine,rows,cols);
     game.prepare();
+    game.renderGame();
+  //  setInterval(game.renderGame,100);
 </script>
 
 
