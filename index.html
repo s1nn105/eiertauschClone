@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="DE">
+<head>
+    <meta charset="utf-8" />
+    <title>Eiertausch</title>
+    <style>
+        * { padding: 0; margin: 0; }
+        canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="900" height="900"></canvas>
+
+<script src="Renderer.js"></script>
+<script src="EierTausch.js"></script>
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+    var cContext = ctx;
+
+    var render = new Renderer(ctx,canvas.height,canvas.width);
+    var game= new EierTausch(render);
+    game.prepare();
+</script>
+
+
+
+</body>
+</html>
