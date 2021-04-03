@@ -91,6 +91,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const isBlank = squares[i].style.backgroundColor === '';
             if(notValid.includes(i)){continue}
             if (rowToCheck.every(index => squares[index].style.backgroundColor === decidedColor && !isBlank)) {
+                let lowerBound = rowToCheck[0];
+                let upperBound = rowToCheck[rowToCheck.length-1];
+
+                for(lowerBound;lowerBound>=0;lowerBound--){
+                    if(squares[lowerBound].style.backgroundColor===decidedColor){
+                        rowToCheck.push(lowerBound);
+                    }else {
+                        break;
+                    }
+                }
+                for(upperBound;upperBound<width*width;upperBound++){
+                    if(squares[upperBound].style.backgroundColor===decidedColor){
+
+                        rowToCheck.push(upperBound);
+                    }else {
+                        break;
+                    }
+                }
                 rowToCheck.forEach(index => {
                     squares[index].style.backgroundColor = '';
                     score+=pointPerField;
@@ -108,6 +126,22 @@ document.addEventListener('DOMContentLoaded', () => {
             let decidedColor = squares[i].style.backgroundColor;
             const isBlank = squares[i].style.backgroundColor === '';
             if (rowToCheck.every(index => squares[index].style.backgroundColor === decidedColor && !isBlank)) {
+                let lowerBound = rowToCheck[0];
+                let upperBound = rowToCheck[rowToCheck.length-1];
+
+                for(upperBound;upperBound<width*(width-1);upperBound+=width){
+                    if(squares[upperBound].style.backgroundColor===decidedColor){
+
+                        rowToCheck.push(upperBound);
+                    }else {
+                        break;
+                    }
+                }
+
+
+
+
+
                 rowToCheck.forEach(index => {
                     squares[index].style.backgroundColor = '';
                     score+=pointPerField;
