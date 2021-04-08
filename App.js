@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     createBoard();
 
+    //add event Listener
     squares.forEach(squares => squares.addEventListener('dragstart', dragStart));
     squares.forEach(squares => squares.addEventListener('dragend', dragEnd));
     squares.forEach(squares => squares.addEventListener('dragover', dragOver));
