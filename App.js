@@ -5,10 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 8;
     const matchSize = 3;
     let score = 0;
-    let timeLeft= 100;
-    let statusDecrease = 1;//the decrease every second
+    let timeLeft= 10000;
+    let decreaseModifier = 1;
+    let statusDecrease = 10;//the decrease every second
     const statusBar = document.getElementById("statusBar")
     let pointPerField = 1;
+    const timePerField=20;
     const MAIN_SELECTED_BORDER = "3px solid #d6ff08";
     const DEFAULT_BORDER = "3px solid black";//this needs to match with the CSs Default border !! elf
     const SELECTED_ADJACENT_BORDER = "3px solid #d6ff08";
@@ -154,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let decidedColor = squares[i].style.backgroundColor;
             const isBlank = squares[i].style.backgroundColor === '';
             if (rowToCheck.every(index => squares[index].style.backgroundColor === decidedColor && !isBlank)) {
-                let lowerBound = rowToCheck[0];
                 let upperBound = rowToCheck[rowToCheck.length-1];
 
                 for(upperBound;upperBound<width*(width-1);upperBound+=width){
@@ -173,6 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 rowToCheck.forEach(index => {
                     squares[index].style.backgroundColor = '';
                     score+=pointPerField;
+                    timeLeft+=timePerField;
+                    decidedColor+= (1/100) * (1/timePerField)
                 });
             }
 
@@ -193,12 +196,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    function updateTime() {
+
+        if (timeLeft > 10000) {
+            timeLeft = 10000;
+        } else {
+            timeLeft -= statusDecrease*decreaseModifier;
+
+        }
+        statusBar.style.width = timeLeft/100 + "%";
+        if(timeLeft<=0){
+            console.log("game End")
+            alert("GameEnded")
+            window.clearInterval(intervals)
+        }
+    }
 
 
-    window.setInterval(function () {
+
+   var intervals= window.setInterval(function () {
         moveDown();
         checkRow();
         checkColumn();
+        updateTime();
     }, 100)
     window.setInterval(function (){
         scoreDisplay.innerHTML=score;
