@@ -5,7 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 8;
     const matchSize = 3;
     let score = 0;
+    let timeLeft= 100;
+    let statusDecrease = 1;//the decrease every second
+    const statusBar = document.getElementById("statusBar")
     let pointPerField = 1;
+    const MAIN_SELECTED_BORDER = "3px solid #d6ff08";
+    const DEFAULT_BORDER = "3px solid black";//this needs to match with the CSs Default border !! elf
+    const SELECTED_ADJACENT_BORDER = "3px solid #d6ff08";
+
+    let firstSelected=null;
     const  scoreDisplay = document.getElementById("score");
     const squares = [];
     const candyColors = [
@@ -30,57 +38,76 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     createBoard();
 
-    //add event Listener
-    squares.forEach(squares => squares.addEventListener('dragstart', dragStart));
-    squares.forEach(squares => squares.addEventListener('dragend', dragEnd));
-    squares.forEach(squares => squares.addEventListener('dragover', dragOver));
-    squares.forEach(squares => squares.addEventListener('dragenter', dragEnter));
-    squares.forEach(squares => squares.addEventListener('drop', dragDrop));
-
-
-    let colorBeingDragged;
-    let colorBeingReplaced;
-    let draggedId;
-    let replacedId;
-
-    function dragStart() {
-        colorBeingDragged = this.style.backgroundColor;
-        draggedId = parseInt(this.id);
-    }
-
-
-    function dragOver(e) {
-        e.preventDefault();
-    }
-
-    function dragEnter() {
-    }
-
-    function dragDrop() {
-        colorBeingReplaced = this.style.backgroundColor;
-        replacedId = parseInt(this.id);
-        squares[draggedId].style.backgroundColor = colorBeingReplaced;
-        squares[replacedId].style.backgroundColor = colorBeingDragged;
-    }
-
-    //check that moves are allowed
-    function dragEnd() {
-        let validMoves = [
-            draggedId - 1,
-            draggedId - width,
-            draggedId + width,
-            draggedId + 1
+    function setAdjacentBorder(center,newStyle){
+        let possibleMoves = [
+            center - 1,
+            center- width,
+            center+ width,
+            center + 1
         ];
-        let validMove = validMoves.includes(replacedId);
-        if (replacedId && validMove) {
-            replacedId = null;
-        } else if (replacedId && !validMove) {
-            squares[replacedId].style.backgroundColor = colorBeingReplaced;
-            squares[draggedId].style.backgroundColor = colorBeingDragged;
-        } else {
-            squares[draggedId].style.backgroundColor = colorBeingDragged;
-        }
+       possibleMoves =  possibleMoves.filter(index => index>=0&&index<=width*width);
+        possibleMoves.forEach(ppos =>  squares[ppos].style.border = newStyle);
     }
+
+    function clickEvent(tile){
+
+//case one we have nothing selected
+        if(firstSelected==null){
+            firstSelected = parseInt(tile.path[0].id);
+            colorBeingDragged = squares[firstSelected].style.backgroundColor;
+            squares[firstSelected].style.border = MAIN_SELECTED_BORDER;
+            setAdjacentBorder(firstSelected,SELECTED_ADJACENT_BORDER);
+            return;
+        }
+        //if we are here one is already selected
+        let validMoves = [
+            firstSelected - 1,
+            firstSelected- width,
+            firstSelected+ width,
+            firstSelected + 1
+        ];
+        let secondSelected  = parseInt(tile.path[0].id);
+
+
+        //case 2 we want to unselect one tile
+        //we need to be able to unselect
+        if(secondSelected===firstSelected){
+            squares[firstSelected].style.border="";
+            setAdjacentBorder(firstSelected,DEFAULT_BORDER)
+
+
+            firstSelected=null
+            return;
+        }
+        console.log(secondSelected)
+        colorBeingReplaced = squares[secondSelected].style.backgroundColor;
+
+        let validMove = validMoves.includes(secondSelected);
+
+        //case 3 we want to select a other first tile by clicking a tile that is out of reach
+        if (! validMove) {
+            setAdjacentBorder(firstSelected,DEFAULT_BORDER);
+            secondSelected= null;
+            firstSelected=null;
+            clickEvent(tile)
+
+        } else if (secondSelected && validMove) {
+            console.log("success")
+            squares[secondSelected].style.backgroundColor = colorBeingDragged;
+            squares[firstSelected].style.backgroundColor = colorBeingReplaced;
+            setAdjacentBorder(firstSelected,DEFAULT_BORDER)
+            squares[firstSelected].style.border = DEFAULT_BORDER;
+            firstSelected=null;
+            secondSelected=null;
+        }
+
+
+
+
+}
+
+    squares.forEach(square=> square-addEventListener("click",clickEvent))
+    //anything commented out is the drag and drop thingy
 
 
     //matches 3 in a row

@@ -1,11 +1,26 @@
+/**Not 650 as you would expect since 8 x 8 grid and each tile has 70 px but 608 since borders*/
 .MagicGrid {
 
-    height: 560px;
-    width: 560px;
+    height: 608px;
+    width: 608px;
     display: flex;
     flex-wrap: wrap;
+    background-color: darkgreen;
 }
 .MagicGrid div{
     height: 70px;
     width: 70px;
+    border: 3px solid black;
+
+
+}
+#StatusBar {
+    width: 100%;
+    background-color: #ddd;
+}
+
+#statusBar {
+    width: 100%;
+    height: 30px;
+    background-color: #4CAF50;
 }
